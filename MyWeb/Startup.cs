@@ -52,7 +52,7 @@ namespace MyWeb
                     options.Scope.Add("openid");
 
                 });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +73,7 @@ namespace MyWeb
             app.UseStaticFiles();
             //  app.UseCookiePolicy();
             app.UseAuthentication();
-       
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
