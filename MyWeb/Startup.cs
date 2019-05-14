@@ -42,15 +42,16 @@ namespace MyWeb
                 .AddCookie("MyCookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "https://localhost:44367";
+                    options.Authority = "https://localhost:44316";
                     options.RequireHttpsMetadata = true;
-                    options.ClientId = "mymvc";
-                    options.SaveTokens = false;
+                    options.ClientId = "MyWeb";
+                    options.SaveTokens = true;
                     options.ClientSecret = "mysecret";
                     options.ResponseType = "code id_token";
                     options.Scope.Add("profile");
                     options.Scope.Add("openid");
-
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    
                 });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

@@ -46,17 +46,19 @@ namespace IDP_Host
                 new Client
                 {
                     ClientId = "MyWeb",
-                    ClientName = "MVC Client",
+                    ClientName = "MVC_Client",
 
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
-                    ClientSecrets = { new Secret("49C1A7E1-0C79-4A89-A3D6-A37998FB86B0".Sha256()) },
-
-                    RedirectUris = { "https://localhost:44316/signin-oidc" },
-                    FrontChannelLogoutUri = "https://localhost:44316/signout-oidc",
-                    PostLogoutRedirectUris = { "https://localhost:44316/signout-callback-oidc" },
+                    ClientSecrets = { new Secret("mysecret".Sha256()) },
+                   
+                    RedirectUris = { "https://localhost:44380/signin-oidc" },
+                    //FrontChannelLogoutUri = "https://localhost:44380/signout-oidc",
 
                     AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "api1" }
+                    AllowedScopes = { "openid", "profile" },
+                    PostLogoutRedirectUris = {
+                        "https://localhost:44380/signout-callback-oidc"
+                    },
                 },
 
                 // SPA client using implicit flow
