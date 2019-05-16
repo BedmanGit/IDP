@@ -1,0 +1,19 @@
+﻿@model IEnumerable<MyWeb.Models.PhotosForListDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid" style="margin-top: 5%">
+    @foreach (var item in Model) {
+    <div style="display:inline-block; margin-left: 1%">
+
+        <img alt="@item.Description" src="@Url.Content(item.Url)" width="100px" height="100px" />
+        <div style="margin-top:5%">
+            <input type="button" value="Edit" />
+            <input type="button" value="Delete" />
+        </div>
+    </div>
+    }
+</div>
+

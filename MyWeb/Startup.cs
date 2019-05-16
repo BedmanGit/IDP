@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +37,9 @@ namespace MyWeb
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddScoped<HttpClient>();
 
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "MyCookies";
@@ -50,8 +56,30 @@ namespace MyWeb
                     options.ResponseType = "code id_token";
                     options.Scope.Add("profile");
                     options.Scope.Add("openid");
+                    options.Scope.Add("address");
+                    options.Scope.Add("roles");
                     options.GetClaimsFromUserInfoEndpoint = true;
-                    
+                    options.Events = new OpenIdConnectEvents()
+                    {
+                        OnTokenValidated = tokenValidatedContext =>
+                        {
+                            var identity = tokenValidatedContext.Principal.Identity as ClaimsIdentity;
+                            var subjectClaim = identity.Claims.FirstOrDefault(z => z.Type == "sub");
+
+                            var newClaimsIdentity = new ClaimsIdentity(tokenValidatedContext.Scheme.Name,
+                                "given_name", 
+                                "role");
+                            newClaimsIdentity.AddClaim(subjectClaim);
+                            tokenValidatedContext.Principal = new ClaimsPrincipal(newClaimsIdentity);
+                            //tokenValidatedContext.Success();
+                            return Task.FromResult(0);
+                        },
+                        OnUserInformationReceived = userInformationReceivedContext =>
+                        {
+                            userInformationReceivedContext.User.Remove("address");
+                            return Task.FromResult(0);
+                        }
+                    };
                 });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

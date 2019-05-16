@@ -4,6 +4,8 @@
 
 using IdentityServer4.Models;
 using System.Collections.Generic;
+using static IdentityModel.OidcConstants;
+using GrantTypes = IdentityServer4.Models.GrantTypes;
 
 namespace IDP_Host
 {
@@ -15,6 +17,8 @@ namespace IDP_Host
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResources.Address(),
+                new IdentityResource("roles", "You role(s)", new List<string>(){"role"})
             };
         }
 
@@ -54,8 +58,13 @@ namespace IDP_Host
                     RedirectUris = { "https://localhost:44380/signin-oidc" },
                     //FrontChannelLogoutUri = "https://localhost:44380/signout-oidc",
 
-                    AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile" },
+                    AllowOfflineAccess = false,
+                    AllowedScopes = {
+                        StandardScopes.OpenId,
+                        StandardScopes.Profile,
+                        StandardScopes.Address,
+                        "roles"
+                    },
                     PostLogoutRedirectUris = {
                         "https://localhost:44380/signout-callback-oidc"
                     },

@@ -5,11 +5,13 @@ VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IS4Host", "IS4Host\IS4Host.csproj", "{0CBC2AE6-3C18-4A9A-9EDB-2F5DDD8243E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyWeb", "MyWeb\MyWeb.csproj", "{14432CC3-69B7-47AE-90DE-8AA84E117AA4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyWeb", "MyWeb\MyWeb.csproj", "{14432CC3-69B7-47AE-90DE-8AA84E117AA4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDP_Host", "IDP_Host\IDP_Host.csproj", "{C875D966-6C31-49FC-B2E3-6AC392AF8D32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyAPI", "MyAPI\MyAPI.csproj", "{00F2AF83-2280-4B44-819F-9FB274C6C83D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyAPI", "MyAPI\MyAPI.csproj", "{00F2AF83-2280-4B44-819F-9FB274C6C83D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatingApp.API", "DatingApp.API\DatingApp.API.csproj", "{55AF4F01-73EF-427B-B97E-7797C4745D51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{00F2AF83-2280-4B44-819F-9FB274C6C83D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00F2AF83-2280-4B44-819F-9FB274C6C83D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00F2AF83-2280-4B44-819F-9FB274C6C83D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55AF4F01-73EF-427B-B97E-7797C4745D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55AF4F01-73EF-427B-B97E-7797C4745D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55AF4F01-73EF-427B-B97E-7797C4745D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55AF4F01-73EF-427B-B97E-7797C4745D51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
