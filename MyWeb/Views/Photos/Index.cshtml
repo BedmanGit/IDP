@@ -10,8 +10,9 @@
 
         <img alt="@item.Description" src="@Url.Content(item.Url)" width="100px" height="100px" />
         <div style="margin-top:5%">
-            <input type="button" value="Edit" />
-            <input type="button" value="Delete" />
+            <a asp-controller="Photos" asp-action="Add">Add</a>
+            <a asp-controller="Photos" asp-action="Edit">Edit</a>
+            <a asp-controller="Photos" asp-action="Delete">Delete</a>
         </div>
     </div>
     }

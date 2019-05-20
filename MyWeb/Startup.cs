@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -37,7 +38,8 @@ namespace MyWeb
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddScoped<HttpClient>();
+            //register DI instance
+            DI.AddDependencyInjectionClass(services);
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services.AddAuthentication(options =>
@@ -52,13 +54,14 @@ namespace MyWeb
                     options.RequireHttpsMetadata = true;
                     options.ClientId = "MyWeb";
                     options.SaveTokens = true;
-                    options.ClientSecret = "mysecret";
                     options.ResponseType = "code id_token";
+                    options.GetClaimsFromUserInfoEndpoint = true;
                     options.Scope.Add("profile");
                     options.Scope.Add("openid");
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
-                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.ClientSecret = "mysecret";
+                    options.ClaimActions.MapJsonKey("role", "role");
                     options.Events = new OpenIdConnectEvents()
                     {
                         OnTokenValidated = tokenValidatedContext =>
