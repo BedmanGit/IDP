@@ -19,6 +19,7 @@ namespace IDP_Host
                 new IdentityResources.Profile(),
                 new IdentityResources.Address(),
                 new IdentityResource("roles", "You role(s)", new List<string>(){"role"})
+               
             };
         }
 
@@ -26,7 +27,7 @@ namespace IDP_Host
         {
             return new ApiResource[]
             {
-                new ApiResource("MyAPI", "My API #1")
+                new ApiResource("DatingApp-API", "Dating App API")
             };
         }
 
@@ -37,11 +38,11 @@ namespace IDP_Host
                 // client credentials flow client
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "Client",
                     ClientName = "Client Credentials Client",
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
-                    ClientSecrets = { new Secret("511536EF-F270-4058-80CA-1C89C192F69A".Sha256()) },
+                    ClientSecrets = { new Secret("thisismysecret".Sha256()) },
 
                     AllowedScopes = { "MyAPI" }
                 },
@@ -63,7 +64,8 @@ namespace IDP_Host
                         StandardScopes.OpenId,
                         StandardScopes.Profile,
                         StandardScopes.Address,
-                        "roles"
+                        "roles",
+                        "DatingApp-API"
                     },
                     PostLogoutRedirectUris = {
                         "https://localhost:44380/signout-callback-oidc"

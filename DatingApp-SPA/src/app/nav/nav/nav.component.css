@@ -1,0 +1,7 @@
+.dropdown-toggle, .dropdown-item{
+    cursor: pointer;
+}
+.profileImg{
+    max-height: 50px;
+    border: 2px solid white;
+}

@@ -15,7 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace DatingApp.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/users/{userId}/photos")]
     [ApiController]
     public class PhotosController : ControllerBase
@@ -50,6 +50,15 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> GetPhotos(int userId)
         {
             var photosFromRepo = await _userRepo.GetPhotosAsync(userId);
+            var photo = _mapper.Map<List<PhotoForReturnDTO>>(photosFromRepo);
+            return Ok(photo);
+        }
+        [Authorize(Roles = "admin")]
+        [HttpGet(Name = "GetAllPhotos")]
+        [Route("getallphotos")]
+        public async Task<IActionResult> GetPhotos()
+        {
+            var photosFromRepo = await _userRepo.GetPhotosAsync();
             var photo = _mapper.Map<List<PhotoForReturnDTO>>(photosFromRepo);
             return Ok(photo);
         }

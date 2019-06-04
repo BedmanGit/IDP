@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyWeb.Core;
 
 namespace MyWeb
 {
@@ -50,7 +51,7 @@ namespace MyWeb
                 .AddCookie("MyCookies")
                 .AddOpenIdConnect("oidc", options =>
                 {
-                    options.Authority = "https://localhost:44316";
+                    options.Authority = Variables.IDPBaseUrl;
                     options.RequireHttpsMetadata = true;
                     options.ClientId = "MyWeb";
                     options.SaveTokens = true;
@@ -60,6 +61,8 @@ namespace MyWeb
                     options.Scope.Add("openid");
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
+                    options.Scope.Add("DatingApp-API");
+
                     options.ClientSecret = "mysecret";
                     options.ClaimActions.MapJsonKey("role", "role");
                     options.Events = new OpenIdConnectEvents()

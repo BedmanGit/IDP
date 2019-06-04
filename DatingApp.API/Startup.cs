@@ -49,14 +49,24 @@ namespace DatingApp.API
             services.AddScoped<IAuthRepository,  AuthRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
-                    options.TokenValidationParameters = new TokenValidationParameters(){
-                    ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings:Token").ToString())),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                    };
+            //services.AddAuthentication()
+                //.AddJwtBearer(options => {
+                //    options.TokenValidationParameters = new TokenValidationParameters(){
+                //    ValidateIssuerSigningKey = true,
+                //    ValidateLifetime = true,
+                //    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings:Token").ToString())),
+                //    ValidateIssuer = false,
+                //    ValidateAudience = false
+                //    };
+                    
+                   
+                //})
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.ApiName = "DatingApp-API";
+                    options.RequireHttpsMetadata = true;
+                    options.Authority = "https://localhost:44316/";
+                    options.ApiSecret = "thisismysecret";
                 });
         }
 

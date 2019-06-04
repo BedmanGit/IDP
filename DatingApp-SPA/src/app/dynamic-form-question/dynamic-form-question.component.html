@@ -1,0 +1,44 @@
+<div [formGroup]="form" class="form-row mt-4">
+  <div class="col-sm-2">
+    <label [attr.for]="question.key">{{question.label}}</label>
+  </div>
+
+  <div [ngSwitch]="question.controlType" class="col-sm-6">
+    <!-- textbox -->
+    <input *ngSwitchCase="'textbox'" [formControlName]="question.key" [id]="question.key"
+      class="form-control" (change)="updateQuestions(question.key)" />
+
+    <!-- dropdown -->
+    <select [id]="question.key" *ngSwitchCase="'dropdown'" [formControlName]="question.key" class="form-control"
+      (change)="updateQuestions(question.key)">
+      <option *ngFor="let opt of question.options" [value]="opt.key">{{opt.value}}</option>
+    </select>
+    <!-- datepicker -->
+    <app-ngbd-datepicker-popup [key]="question.key" [formgp]="form" *ngSwitchCase="'datePicker'">
+    </app-ngbd-datepicker-popup>
+
+    <!-- checkbox -->
+      <input *ngSwitchCase="'checkbox'" [formControlName]="question.key" [id]="question.key"
+        type="checkbox" class="form-check-input" (change)="updateQuestions(question.key)" />
+
+    <!-- Errors -->
+    <div class="text-danger"
+      *ngIf="this.form.controls[this.question.key].invalid && this.form.controls[this.question.key].dirty 
+              && this.form.controls[this.question.key].touched &&
+              this.form.controls[this.question.key].errors !== null && this.form.controls[this.question.key].errors !== undefined">
+      <div *ngFor="let errorMsg of keys(this.form.controls[this.question.key].errors)">
+        <small>{{errorMsg}}</small>
+      </div>
+    </div>
+
+
+    <div *ngIf="this.form.invalid && this.form.dirty && this.form.touched &&
+              this.question.customValidations !== '' &&
+              this.form.hasError('customValidations')" class="text-danger">
+      <small>Must be James from Brooklyn!</small>
+    </div>
+
+
+  </div>
+
+</div>
