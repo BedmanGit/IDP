@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../_services/user.service';
-import { User } from '../../_models/user';
+import { AppUser } from '../../_models/AppUser';
 import { AlertifyService } from '../../_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./member-list.component.css']
 })
 export class MemberListComponent implements OnInit {
-users: User[];
+users: AppUser[];
   constructor(private userservice: UserService, private alertify: AlertifyService, private route: ActivatedRoute) { }
 
   ngOnInit() {

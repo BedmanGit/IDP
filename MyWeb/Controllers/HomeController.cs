@@ -11,19 +11,19 @@ using MyWeb.Models;
 
 namespace MyWeb.Controllers
 {
-    [Authorize]
+    
     public class HomeController : Controller
     {
         public async Task<IActionResult> Index()
         {
-            await WriteOutIdentityInformation();
+            
             return View();
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
             ViewData["Message"] = "Your application description page.";
-
+            await WriteOutIdentityInformation();
             return View();
         }
 
@@ -62,5 +62,10 @@ namespace MyWeb.Controllers
             await HttpContext.SignOutAsync("oidc");
         }
 
+        [Authorize]
+        public async Task Login()
+        {
+    
+        }
     }
 }

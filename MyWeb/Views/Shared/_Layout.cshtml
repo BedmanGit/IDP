@@ -30,8 +30,10 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li><li>|</li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li><li>|</li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li>|</li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li>|</li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     @if (User.IsInRole("admin") || User.IsInRole("staff"))
                     {
@@ -40,6 +42,10 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li><a asp-area="" asp-controller="Home" asp-action="Logout">Logout</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
                     }
                 </ul>
             </div>

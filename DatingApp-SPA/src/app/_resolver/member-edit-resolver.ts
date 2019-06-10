@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { User } from '../_models/user';
+import { AppUser } from '../_models/AppUser';
 import { Resolve, Router, ActivatedRouteSnapshot } from '@angular/router';
 import { AlertifyService } from '../_services/alertify.service';
 import { UserService } from '../_services/user.service';
@@ -8,7 +8,7 @@ import { of } from 'rxjs';
 import { AuthService } from '../_services/Auth.service';
 
 @Injectable()
-export class MemberEditResolver implements Resolve<User> {
+export class MemberEditResolver implements Resolve<AppUser> {
     constructor(private userService: UserService, private router: Router, private alertify: AlertifyService, private auth: AuthService) {}
 
     resolve(route: ActivatedRouteSnapshot) {

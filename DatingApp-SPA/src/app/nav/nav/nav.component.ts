@@ -26,7 +26,9 @@ photoUrl: string;
       this.alertify.error(error);
     });
   }
-
+  IDP_login() {
+    this.authService.IDP_login();
+  }
   loggedIn() {
     return this.authService.loggedIn();
   }
