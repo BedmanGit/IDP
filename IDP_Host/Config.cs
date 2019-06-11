@@ -52,8 +52,8 @@ namespace IDP_Host
                 {
                     ClientId = "MyWeb",
                     ClientName = "MVC_Client",
-
-                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
+                    ClientUri = "https://localhost:44380/",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
                     ClientSecrets = { new Secret("mysecret".Sha256()) },
                    
                     RedirectUris = { "https://localhost:44380/signin-oidc" },
@@ -81,14 +81,14 @@ namespace IDP_Host
 
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowAccessTokensViaBrowser = true,
-                    
+
                     RedirectUris =
                     {
                         "http://localhost:4200/assets/oidc-login-redirect.html",
                     },
                  
-                    PostLogoutRedirectUris = { "http://localhost:4200/" },
-                    AllowedCorsOrigins = { "http://localhost:4200" },
+                    PostLogoutRedirectUris = { "http://localhost:4200/signout-callback-oidc" },
+                    AllowedCorsOrigins = { "http://localhost:4200/" },
 
                     AllowedScopes = { "openid", "profile", "DatingApp-API" }
                 }

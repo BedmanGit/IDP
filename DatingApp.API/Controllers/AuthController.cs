@@ -78,5 +78,6 @@ namespace DatingApp.API.Controllers
                 user = userForList
             });
         }
+        
     }
 }

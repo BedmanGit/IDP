@@ -29,6 +29,12 @@ photoUrl: string;
   IDP_login() {
     this.authService.IDP_login();
   }
+  IDP_logout() {
+    this.authService.IDP_logout();
+  }
+  IDP_loggedIn() {
+    return this.authService.IDP_loggedIn();
+  }
   loggedIn() {
     return this.authService.loggedIn();
   }

@@ -18,7 +18,7 @@ userPhotoUrl = new BehaviorSubject<string>('../../assets/user.png');
 currentUserPhotoUrl = this.userPhotoUrl.asObservable();
 
 private _userManager: UserManager;
-
+private _user: User;
 changeMemberProfilePicture(profilePictureUrl: string) {
   this.userPhotoUrl.next(profilePictureUrl);
 }
@@ -30,17 +30,30 @@ constructor(private http: HttpClient) {
     redirect_uri: `${environment.Client_Root}/assets/oidc-login-redirect.html`,
     scope: 'openid DatingApp-API profile',
     response_type: 'id_token token',
-    
-    post_logout_redirect_uri:  `${environment.Client_Root}`,
+    post_logout_redirect_uri:  `${environment.Client_Root}/signout-callback-oidc`,
     userStore: new WebStorageStateStore({store: window.localStorage})
   };
   this._userManager = new UserManager(_config);
-
+  this._userManager.getUser().then(user => {
+    if (user && !user.expired) {
+      this._user = user;
+    }
+  });
 }
 
-
   IDP_login() {
-    return from(this._userManager.signinRedirect());
+    return from(this._userManager.signinRedirect())
+    .pipe(
+      map(() => {
+
+      })
+    );
+  }
+  IDP_logout() {
+    return from(this._userManager.signoutRedirect());
+  }
+  IDP_loggedIn() {
+    return this._user && this._user.access_token && !this._user.expired;
   }
 
   login(model: any) {
@@ -68,4 +81,5 @@ constructor(private http: HttpClient) {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
   }
+
 }

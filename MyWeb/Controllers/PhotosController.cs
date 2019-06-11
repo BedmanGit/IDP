@@ -29,6 +29,7 @@ namespace MyWeb.Controllers
         {
             var _httpContext = await GetClient();
             var response = await _httpContext.GetAsync($"{Variables.DatingAppBaseUrl}/api/users/1/photos/getallphotos");
+         
             if (response.IsSuccessStatusCode)
             {
                 List<PhotosForListDTO> photos = await response.Content.ReadAsAsync<List<PhotosForListDTO>>();

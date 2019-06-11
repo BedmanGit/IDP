@@ -42,7 +42,9 @@
             </div>
           </div>
           
-          <button class="btn btn-success my-2 my-sm-0" type="submit" (click) = "IDP_login()">Login</button>
+          <button *ngIf="!IDP_loggedIn()" class="btn btn-success my-2 my-sm-0" href="#" (click) = "IDP_login()">OIDC Login</button>
+          <button *ngIf="IDP_loggedIn()" class="btn btn-success my-2 my-sm-0" href="#" (click)="IDP_logout()">OIDC Logout</button>
+       
 
           <form *ngIf="!loggedIn()" #loginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit) = "login()">
             <input class="form-control mr-sm-2" type="text" name="username" placeholder="username" required [(ngModel)]="model.username">

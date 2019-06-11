@@ -65,6 +65,7 @@ namespace MyWeb
 
                     options.ClientSecret = "mysecret";
                     options.ClaimActions.MapJsonKey("role", "role");
+                
                     options.Events = new OpenIdConnectEvents()
                     {
                         OnTokenValidated = tokenValidatedContext =>

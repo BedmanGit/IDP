@@ -9,7 +9,7 @@ mgr.signinRedirectCallback().then(() => {
     window.history.replaceState({},
     window.document.title,
     window.location.origin);
-    window.location - "/";
+    window.location = '/'
 }, error => {
     console.error(error);
 })

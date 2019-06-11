@@ -14,9 +14,8 @@ namespace MyWeb.Controllers
     
     public class HomeController : Controller
     {
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            
             return View();
         }
 
@@ -63,9 +62,9 @@ namespace MyWeb.Controllers
         }
 
         [Authorize]
-        public async Task Login()
+        public ActionResult Login()
         {
-    
+            return View("index");
         }
     }
 }
