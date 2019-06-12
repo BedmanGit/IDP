@@ -53,7 +53,7 @@ namespace DatingApp.API.Controllers
             var photo = _mapper.Map<List<PhotoForReturnDTO>>(photosFromRepo);
             return Ok(photo);
         }
-        //[Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [HttpGet(Name = "GetAllPhotos")]
         [Route("getallphotos")]
         public async Task<IActionResult> GetPhotos()

@@ -27,7 +27,8 @@ namespace IDP_Host
         {
             return new ApiResource[]
             {
-                new ApiResource("DatingApp-API", "Dating App API")
+                new ApiResource("DatingApp-API", "Dating App API",
+                new List<string>{"role" })
             };
         }
 
