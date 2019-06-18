@@ -26,53 +26,52 @@ changeMemberProfilePicture(profilePictureUrl: string) {
 }
 
 constructor(private http: HttpClient, private userService: UserService) {
-  const _config = {
-    authority: environment.IDPBaseUrl,
-    client_id: environment.Client_Id,
-    redirect_uri: `${environment.Client_Root}/assets/oidc-login-redirect.html`,
-    scope: 'openid DatingApp-API profile',
-    response_type: 'id_token token',
-    post_logout_redirect_uri:  `${environment.Client_Root}/signout-callback-oidc`,
-    userStore: new WebStorageStateStore({store: window.localStorage})
-  };
-  this._userManager = new UserManager(_config);
+  if (!this._user) {
+      const _config = {
+        authority: environment.IDPBaseUrl,
+        client_id: environment.Client_Id,
+        redirect_uri: `${environment.Client_Root}/assets/oidc-login-redirect.html`,
+        scope: 'openid DatingApp-API profile',
+        response_type: 'id_token token',
+        post_logout_redirect_uri:  `${environment.Client_Root}/signout-callback-oidc`,
+        userStore: new WebStorageStateStore({store: window.localStorage})
+      };
+      this._userManager = new UserManager(_config);
 
-  this._userManager.getUser().then(user => {
-    if (user && !user.expired) {
-      this._user = user;
-    }
-  });
+      this._userManager.getUser().then(user => {
+        if (user && !user.expired) {
+          this._user = user;
+
+          localStorage.setItem('token', this._user.access_token);
+          this.decodedToken = this.jwtHelper.decodeToken(this._user.access_token);
+          this.GetUserFromAPI();
+
+        }
+      });
+  }
 }
 
   GetUserFromAPI() {
-    return this.userService.getUser(this._user.profile.sub)
-    .pipe(
-      map((response: any) => {
-        const resp = response;
-        if (resp) {
-          this.currentUser = resp;
-          localStorage.setItem('user', JSON.stringify(resp));
+    this.userService.getUser(this._user.profile.sub).subscribe(
+      next => {
+        console.log(next);
+        if (next) {
+          this.currentUser = next;
+          localStorage.setItem('user', JSON.stringify(next));
           this.changeMemberProfilePicture(this.currentUser.photoUrl);
         }
+    },
+      error => {
+        console.log(error);
       }
-    )
     );
   }
 
   IDP_login() {
-    return from(this._userManager.signinRedirect())
-    .pipe(
-      map(() => {
-        if (this._user !== undefined) {
-          localStorage.setItem('token', this._user.access_token);
-          this.decodedToken = this.jwtHelper.decodeToken(this._user.access_token);
-          this.GetUserFromAPI();
-        }
-      })
-    );
+    return this._userManager.signinRedirect();
   }
   IDP_logout() {
-    return from(this._userManager.signoutRedirect());
+    return this._userManager.signoutRedirect();
   }
   IDP_loggedIn() {
     return this._user && this._user.access_token && !this._user.expired;

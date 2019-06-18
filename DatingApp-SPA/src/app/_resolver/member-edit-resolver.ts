@@ -12,7 +12,7 @@ export class MemberEditResolver implements Resolve<AppUser> {
     constructor(private userService: UserService, private router: Router, private alertify: AlertifyService, private auth: AuthService) {}
 
     resolve(route: ActivatedRouteSnapshot) {
-        return this.userService.getUser(this.auth.decodedToken.nameid).pipe(
+        return this.userService.getUser(this.auth.decodedToken.sub).pipe(
             catchError(error => {
                 this.alertify.error('problem retrieving login user data');
                 this.router.navigate(['/home/']);

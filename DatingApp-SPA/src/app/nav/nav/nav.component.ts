@@ -30,6 +30,8 @@ photoUrl: string;
     this.authService.IDP_login();
   }
   IDP_logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.authService.IDP_logout();
   }
   IDP_loggedIn() {
@@ -41,6 +43,7 @@ photoUrl: string;
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.alertify.message('logged out');
     this.route.navigate(['/home']);
   }

@@ -15,3 +15,4 @@ export interface AppUser {
   lookingFor?: string;
   photos?: Photo[];
 }
+

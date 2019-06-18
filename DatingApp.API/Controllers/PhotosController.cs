@@ -65,7 +65,7 @@ namespace DatingApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPhotoForUserAsync(int userId, [FromForm]PhotoForCreationDto photoForCreationDto)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            if (userId != int.Parse(User.Claims.FirstOrDefault(a => a.Type == "sub").Value))
             {
                 return Unauthorized();
             }
@@ -106,7 +106,7 @@ namespace DatingApp.API.Controllers
         [HttpPost("{id}/setMain")]
         public async Task<IActionResult> SetMainPhoto(int userId, int id)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            if (userId != int.Parse(User.Claims.FirstOrDefault(a => a.Type == "sub").Value))
             {
                 return Unauthorized();
             }
@@ -132,7 +132,7 @@ namespace DatingApp.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePhoto(int userId, int id)
         {
-            if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            if (userId != int.Parse(User.Claims.FirstOrDefault(a => a.Type == "sub").Value))
             {
                 return Unauthorized();
             }

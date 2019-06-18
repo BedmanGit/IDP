@@ -81,7 +81,7 @@ namespace DatingApp.API
             {
               //  app.UseHsts();
             }
-
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             //app.UseHttpsRedirection();
             app.UseExceptionHandler(builder => {
                 builder.Run(async context => {
@@ -93,7 +93,7 @@ namespace DatingApp.API
                     }
                 });
             });
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            
            // seeder.SeedUsers();
             app.UseAuthentication();
             app.UseMvc();

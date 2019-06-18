@@ -32,7 +32,7 @@ baseUrl = environment.baseUrl;
 
   initializeUploader() {
     this.uploader = new FileUploader({
-      url: this.baseUrl + '/users/' + this.authService.decodedToken.nameid + '/photos',
+      url: this.baseUrl + '/users/' + this.authService.decodedToken.sub + '/photos',
       authToken: 'Bearer ' + localStorage.getItem('token'),
       isHTML5: true,
       allowedFileType: ['image'],
@@ -58,7 +58,7 @@ baseUrl = environment.baseUrl;
     };
   }
   setMainPhoto(photo: Photo) {
-    this.userService.setMainPhoto(this.authService.decodedToken.nameid, photo.id).subscribe(next => {
+    this.userService.setMainPhoto(this.authService.decodedToken.sub, photo.id).subscribe(next => {
       this.alertifyService.success('Photo is set as main photo.');
       this.photos.filter(p => p.isMain)[0].isMain = false;
       photo.isMain = true;
@@ -72,7 +72,7 @@ baseUrl = environment.baseUrl;
 
   deletePhoto(id: number) {
     this.alertifyService.confirm('Are you sure you want to delete this photo?', () => {
-      this.userService.deletePhoto(this.authService.decodedToken.nameid, id).subscribe(() => {
+      this.userService.deletePhoto(this.authService.decodedToken.sub, id).subscribe(() => {
         this.photos.splice(this.photos.findIndex(p => p.id === id), 1);
       }, error => {
         this.alertifyService.error('Failed to delete the  photo.');

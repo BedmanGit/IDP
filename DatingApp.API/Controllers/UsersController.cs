@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -23,7 +24,8 @@ namespace DatingApp.API.Controllers
             _repo = repo;
             _mapper = mapper;
         }
-        [HttpGet()]
+        [HttpGet]
+        [Route("GetAllUsers")]
         public async Task<IActionResult> GetUsers()
         {
             var users = await _repo.GetUsersAsync();
@@ -38,7 +40,8 @@ namespace DatingApp.API.Controllers
             var userReturn = _mapper.Map<UserForDetailDTO>(user);
             return Ok(userReturn);
         }
-        [HttpGet("{id}")]
+        [HttpGet]
+        [Route("GetUserListDTO/{id}")]
         public async Task<IActionResult> GetUserListDTO(int id)
         {
             var user = await _repo.GetUserAsync(id);
@@ -48,7 +51,7 @@ namespace DatingApp.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, UserForUpdateDTO userForUpdate)
         {
-            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            if (id != int.Parse(User.Claims.FirstOrDefault(a => a.Type == "sub").Value))
             {
                 return Unauthorized();
             }
