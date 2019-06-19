@@ -4,11 +4,14 @@
 
 using System;
 using IdentityServer4;
-using IdentityServer4.Quickstart.UI;
+using IDP.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using IDP.Entities;
+using IDP.Services;
 
 namespace IDP_Host
 {
@@ -25,6 +28,8 @@ namespace IDP_Host
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<UserContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 
             services.Configure<IISOptions>(options =>
@@ -40,12 +45,7 @@ namespace IDP_Host
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             })
-                .AddTestUsers(TestUsers.Users);
-
-            // in-memory, code config
-            //builder.AddInMemoryIdentityResources(Config.GetIdentityResources());
-            //builder.AddInMemoryApiResources(Config.GetApis());
-            //builder.AddInMemoryClients(Config.GetClients());
+            .AddTestUsers(TestUsers.Users);
 
             // in-memory, json config
             builder.AddInMemoryIdentityResources(Config.GetIdentityResources()); //Configuration.GetSection("IdentityResources")
@@ -74,12 +74,14 @@ namespace IDP_Host
                 });
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, UserContext userContext)
         {
             if (Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            userContext.Database.Migrate();
+            userContext.EnsureSeedDataForContext();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             app.UseIdentityServer();
             app.UseStaticFiles();

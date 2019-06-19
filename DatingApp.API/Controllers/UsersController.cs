@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.DTOs;
+using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,7 +57,8 @@ namespace DatingApp.API.Controllers
                 return Unauthorized();
             }
             var userFromRepo = await _repo.GetUserAsync(id);
-            _mapper.Map(userForUpdate, userFromRepo);
+          
+            _mapper.Map(userForUpdate.ToClaims(), userFromRepo);
             if (await _repo.SaveAllAsync())
             return NoContent();
 

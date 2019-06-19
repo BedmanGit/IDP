@@ -47,6 +47,7 @@ namespace MyWeb
             {
                 options.DefaultScheme = "MyCookies";
                 options.DefaultChallengeScheme = "oidc";
+               
             })
                 .AddCookie("MyCookies")
                 .AddOpenIdConnect("oidc", options =>
@@ -62,7 +63,7 @@ namespace MyWeb
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
                     options.Scope.Add("DatingApp-API");
-
+                    
                     options.ClientSecret = "mysecret";
                     options.ClaimActions.MapJsonKey("role", "role");
                 

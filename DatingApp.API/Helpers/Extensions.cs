@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using DatingApp.API.DTOs;
+using DatingApp.API.Models;
 using Microsoft.AspNetCore.Http;
 
 namespace DatingApp.API.Helpers
@@ -19,6 +22,18 @@ namespace DatingApp.API.Helpers
                 age --;
             }
             return age;
+        }
+
+        public static List<UserClaim> ToClaims(this UserForUpdateDTO userUpdateDTO)
+        {
+            List<UserClaim> claims = new List<UserClaim>();
+            Type t = userUpdateDTO.GetType();
+            foreach (var p in t.GetProperties())
+            {
+                claims.Add(new UserClaim(p.Name, p.GetValue(userUpdateDTO).ToString()));
+            }
+            return claims;
+            
         }
     }
 }
