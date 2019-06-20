@@ -34,7 +34,7 @@ namespace IDP.Controllers
         public string Address { get; set; }
 
         [Required]
-        [MaxLength(2)]
+        [MaxLength(30)]
         public string Country { get; set; }
         [Required]
         public string Role { get; set;}

@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using MyWeb.Core;
 
 namespace MyWeb
@@ -66,7 +67,10 @@ namespace MyWeb
                     
                     options.ClientSecret = "mysecret";
                     options.ClaimActions.MapJsonKey("role", "role");
-                
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name"
+                    };
                     options.Events = new OpenIdConnectEvents()
                     {
                         OnTokenValidated = tokenValidatedContext =>

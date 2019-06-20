@@ -105,7 +105,7 @@ namespace Host.Quickstart.Account
                 // in this sample we don't show how that would be done, as our sample implementation
                 // simply auto-provisions new external user
                 var returnUrlAfterRegistration = Url.Action("Callback", new { returnUrl });
-                var continueWithUrl = Url.Action("RegistrationUser", "UserRegistration",
+                var continueWithUrl = Url.Action("RegistUser", "UserRegistration",
                     new { returnUrl = returnUrlAfterRegistration, provider, providerUserId = providerUserId });
                 return Redirect(continueWithUrl);
             }
@@ -139,6 +139,7 @@ namespace Host.Quickstart.Account
                     // return the response is for better UX for the end user.
                     return View("Redirect", new RedirectViewModel { RedirectUrl = returnUrl });
                 }
+                return Redirect(returnUrl);
             }
 
             return Redirect(returnUrl);
