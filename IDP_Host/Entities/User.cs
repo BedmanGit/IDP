@@ -7,13 +7,12 @@ namespace IDP.Entities
     [Table("Users")]
     public class User
     {
-        [Key]
-        [MaxLength(50)]       
-        public string Id { get; set; }
+        [Key]  
+        public int UserId { get; set; }
     
         [MaxLength(100)]
         [Required]
-        public string Username { get; set; }
+        public string UserName { get; set; }
 
         [MaxLength(100)]
         public string Password { get; set; }

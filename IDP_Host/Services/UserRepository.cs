@@ -16,6 +16,10 @@ namespace IDP.Services
             _context = context;
         }
 
+        private string GetLanId(string windowsId)
+        {
+            return windowsId.ToUpper().Replace(@"\", "").Replace("WINDOWS", "");
+        }
         public bool AreUserCredentialsValid(string username, string password)
         {
             // get the user
@@ -35,25 +39,26 @@ namespace IDP.Services
 
         public User GetUserByProvider(string loginProvider, string providerKey)
         {
-            return _context.Users
-                .FirstOrDefault(u => 
-                    u.Logins.Any(l => l.LoginProvider == loginProvider && l.ProviderKey == providerKey));
+            var u = _context.Users.Include(c => c.Claims).Include(l => l.Logins);
+            return u.FirstOrDefault(a => 
+                    a.Logins.Any(l => l.LoginProvider.ToUpper() == loginProvider.ToUpper() && GetLanId(l.ProviderKey) == GetLanId(providerKey)));
+    
         }
 
-        public User GetUserById(string Id)
+        public User GetUserById(int Id)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == Id);
+            return _context.Users.Include(c => c.Claims).FirstOrDefault(u => u.UserId == Id);
         }
 
         public User GetUserByUsername(string username)
         {
-            return _context.Users.FirstOrDefault(u => u.Username == username);
+            return _context.Users.Include(c => c.Claims).FirstOrDefault(u => GetLanId(u.UserName) == GetLanId(username));
         }
 
-        public IEnumerable<UserClaim> GetUserClaimsById(string Id)
+        public IEnumerable<UserClaim> GetUserClaimsById(int Id)
         {
             // get user with claims
-            var user = _context.Users.Include("Claims").FirstOrDefault(u => u.Id == Id);
+            var user = _context.Users.Include("Claims").FirstOrDefault(u => u.UserId == Id);
             if (user == null)
             {
                 return new List<UserClaim>();
@@ -61,9 +66,9 @@ namespace IDP.Services
             return user.Claims.ToList();
         }
 
-        public IEnumerable<UserLogin> GetUserLoginsById(string Id)
+        public IEnumerable<UserLogin> GetUserLoginsById(int Id)
         {
-            var user = _context.Users.Include("Logins").FirstOrDefault(u => u.Id == Id);
+            var user = _context.Users.Include("Logins").FirstOrDefault(u => u.UserId == Id);
             if (user == null)
             {
                 return new List<UserLogin>();
@@ -71,7 +76,7 @@ namespace IDP.Services
             return user.Logins.ToList();
         }
 
-        public bool IsUserActive(string Id)
+        public bool IsUserActive(int Id)
         {
             var user = GetUserById(Id);
             return user.IsActive;
@@ -82,28 +87,28 @@ namespace IDP.Services
             _context.Users.Add(user);
         }
 
-        public void AddUserLogin(string Id, string loginProvider, string providerKey)
+        public void AddUserLogin(int Id, string loginProvider, string providerKey)
         {
             var user = GetUserById(Id);
             if (user == null)
             {
-                throw new ArgumentException("User with given Id not found.", Id);
+                throw new ArgumentException("User with given Id not found.", Id.ToString());
             }
 
             user.Logins.Add(new UserLogin()
             {
-                Id = Id,
+                UserId = Id,
                 LoginProvider = loginProvider,
                 ProviderKey = providerKey
             });
         }
 
-        public void AddUserClaim(string Id, string claimType, string claimValue)
+        public void AddUserClaim(int Id, string claimType, string claimValue)
         {          
             var user = GetUserById(Id);
             if (user == null)
             {
-                throw new ArgumentException("User with given Id not found.", Id);
+                throw new ArgumentException("User with given Id not found.", Id.ToString());
             }
 
             user.Claims.Add(new UserClaim(claimType, claimValue));         
@@ -132,6 +137,9 @@ namespace IDP.Services
             }
         }
 
-       
+        public List<User> GetUsers()
+        {
+            return _context.Users.ToList();
+        }
     }
 }

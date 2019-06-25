@@ -8,17 +8,18 @@ namespace IDP.Services
 {
     public interface IUserRepository
     {
+        List<User> GetUsers();
         User GetUserByUsername(string username);
-        User GetUserById(string Id);
+        User GetUserById(int Id);
         User GetUserByEmail(string email);
         User GetUserByProvider(string loginProvider, string providerKey);
-        IEnumerable<UserLogin> GetUserLoginsById(string Id);
-        IEnumerable<UserClaim> GetUserClaimsById(string Id);
+        IEnumerable<UserLogin> GetUserLoginsById(int Id);
+        IEnumerable<UserClaim> GetUserClaimsById(int Id);
         bool AreUserCredentialsValid(string username, string password);
-        bool IsUserActive(string Id);
+        bool IsUserActive(int Id);
         void AddUser(User user);
-        void AddUserLogin(string Id, string loginProvider, string providerKey);
-        void AddUserClaim(string Id, string claimType, string claimValue);
+        void AddUserLogin(int Id, string loginProvider, string providerKey);
+        void AddUserClaim(int Id, string claimType, string claimValue);
         bool Save();
     }
 }

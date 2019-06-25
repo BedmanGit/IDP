@@ -61,11 +61,11 @@ namespace IDP.Controllers
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
-            //if (vm.IsExternalLoginOnly)
-            //{
+            if (vm.IsExternalLoginOnly)
+            {
                 // we only have one option for logging in and it's an external provider
                 return RedirectToAction("Challenge", "External", new { provider = vm.ExternalLoginScheme, returnUrl });
-            //}
+            }
 
             return View(vm);
         }
@@ -114,7 +114,7 @@ namespace IDP.Controllers
                 if (_userRepository.AreUserCredentialsValid(model.Username, model.Password))
                 {
                     var user = _userRepository.GetUserByUsername(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.Id, user.Username));
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.UserId.ToString(), user.UserName));
 
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
@@ -129,7 +129,7 @@ namespace IDP.Controllers
                     };
 
                     // issue authentication cookie with subject ID and username
-                    await HttpContext.SignInAsync(user.Id, user.Username, props);
+                    await HttpContext.SignInAsync(user.UserId.ToString(), user.UserName, props);
 
                     if (context != null)
                     {

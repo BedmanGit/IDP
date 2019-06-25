@@ -20,8 +20,8 @@ namespace IDP.Entities
             {
                 new User()
                 {
-                    Id = "1",
-                    Username = "eva",
+                    UserId = 1,
+                    UserName = "eva",
                     Password = "password",
                     IsActive = true,
                     Claims = {
@@ -41,8 +41,8 @@ namespace IDP.Entities
                 },
                 new User()
                 {
-                    Id = "2",
-                    Username = "Claire",
+                    UserId = 2,
+                    UserName = "Claire",
                     Password = "password",
                     IsActive = true,
                     Claims = {

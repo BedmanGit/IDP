@@ -69,7 +69,7 @@ namespace MyWeb
                     options.ClaimActions.MapJsonKey("role", "role");
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        NameClaimType = "name"
+                        NameClaimType = "username"
                     };
                     options.Events = new OpenIdConnectEvents()
                     {

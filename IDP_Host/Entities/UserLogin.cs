@@ -14,9 +14,8 @@ namespace IDP.Entities
         [MaxLength(50)]
         public string LoginId { get; set; }
 
-        [MaxLength(50)]
         [Required]
-        public string Id { get; set; }
+        public int UserId { get; set; }
 
         [Required]
         [MaxLength(250)]

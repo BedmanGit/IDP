@@ -54,13 +54,13 @@ namespace IDP_Host
                     ClientId = "MyWeb",
                     ClientName = "MVC_Client",
                     ClientUri = "https://localhost:44380/",
-                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                     ClientSecrets = { new Secret("mysecret".Sha256()) },
                    
                     RedirectUris = { "https://localhost:44380/signin-oidc" },
-                    //FrontChannelLogoutUri = "https://localhost:44380/signout-oidc",
+                    FrontChannelLogoutUri = "https://localhost:44380/signout-oidc",
 
-                    AllowOfflineAccess = false,
+                    AllowOfflineAccess = true,
                     AllowedScopes = {
                         StandardScopes.OpenId,
                         StandardScopes.Profile,

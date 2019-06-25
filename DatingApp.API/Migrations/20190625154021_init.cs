@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace IDP_Host.Migrations
+namespace DatingApp.API.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -10,14 +11,15 @@ namespace IDP_Host.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(maxLength: 50, nullable: false),
-                    Username = table.Column<string>(maxLength: 100, nullable: false),
+                    UserId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserName = table.Column<string>(nullable: true),
                     Password = table.Column<string>(maxLength: 100, nullable: true),
                     IsActive = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
@@ -25,7 +27,7 @@ namespace IDP_Host.Migrations
                 columns: table => new
                 {
                     ClaimId = table.Column<string>(maxLength: 50, nullable: false),
-                    Id = table.Column<string>(maxLength: 50, nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     ClaimType = table.Column<string>(maxLength: 250, nullable: false),
                     ClaimValue = table.Column<string>(maxLength: 250, nullable: false)
                 },
@@ -33,10 +35,34 @@ namespace IDP_Host.Migrations
                 {
                     table.PrimaryKey("PK_Claims", x => x.ClaimId);
                     table.ForeignKey(
-                        name: "FK_Claims_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Claims_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Photos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Url = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    DateAdded = table.Column<DateTime>(nullable: false),
+                    IsMain = table.Column<bool>(nullable: false),
+                    PublicID = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Photos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Photos_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -45,7 +71,7 @@ namespace IDP_Host.Migrations
                 columns: table => new
                 {
                     LoginId = table.Column<string>(maxLength: 50, nullable: false),
-                    Id = table.Column<string>(maxLength: 50, nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 250, nullable: false),
                     ProviderKey = table.Column<string>(maxLength: 250, nullable: false)
                 },
@@ -53,28 +79,36 @@ namespace IDP_Host.Migrations
                 {
                     table.PrimaryKey("PK_UserLogins", x => x.LoginId);
                     table.ForeignKey(
-                        name: "FK_UserLogins_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_UserLogins_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Claims_Id",
+                name: "IX_Claims_UserId",
                 table: "Claims",
-                column: "Id");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserLogins_Id",
+                name: "IX_Photos_UserId",
+                table: "Photos",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLogins_UserId",
                 table: "UserLogins",
-                column: "Id");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
                 name: "Claims");
+
+            migrationBuilder.DropTable(
+                name: "Photos");
 
             migrationBuilder.DropTable(
                 name: "UserLogins");

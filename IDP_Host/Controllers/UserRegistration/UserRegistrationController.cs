@@ -45,7 +45,7 @@ namespace IDP.Controllers
                 // create user + claims
                 var userToCreate = new Entities.User();
                 userToCreate.Password = model.Password;
-                userToCreate.Username = model.Username;
+                userToCreate.UserName = model.Username;
                 userToCreate.IsActive = true;
                 userToCreate.Claims.Add(new Entities.UserClaim("country", model.Country));
                 userToCreate.Claims.Add(new Entities.UserClaim("address", model.Address));
@@ -79,8 +79,8 @@ namespace IDP.Controllers
                     // create claims  
                     List<Claim> claims = new List<Claim>
                     {
-                        new Claim(ClaimTypes.Name, userToCreate.Username),
-                        new Claim(ClaimTypes.Sid, userToCreate.Id)
+                        new Claim(ClaimTypes.Name, userToCreate.UserName),
+                        new Claim(ClaimTypes.Sid, userToCreate.UserId.ToString())
                     };
 
                     // create identity  

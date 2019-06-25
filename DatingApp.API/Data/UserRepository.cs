@@ -26,7 +26,7 @@ namespace DatingApp.API.Data
 
         public async Task<Photo> GetMainPhotoAsync(int userId)
         {
-            return await _context.Photos.Where(p => p.UserID == userId).FirstOrDefaultAsync(p => p.IsMain);
+            return await _context.Photos.Where(p => p.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
         }
 
         public async Task<Photo> GetPhotoAsync(int id)
@@ -36,7 +36,7 @@ namespace DatingApp.API.Data
 
         public async Task<IEnumerable<Photo>> GetPhotosAsync(int userId)
         {
-            return await _context.Photos.Where(p => p.UserID == userId).ToListAsync();
+            return await _context.Photos.Where(p => p.UserId == userId).ToListAsync();
         }
         public async Task<IEnumerable<Photo>> GetPhotosAsync()
         {
@@ -44,13 +44,15 @@ namespace DatingApp.API.Data
         }
         public async Task<User> GetUserAsync(int id)
         {
-            return await _context.Users.Include(p => p.Photos)
-                .FirstOrDefaultAsync(u => u.ID == id);
+            return await _context.Users.Include(u => u.Claims).Include(p => p.Photos)
+                .FirstOrDefaultAsync(u => u.UserId == id);
         }
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-           return await _context.Users.Include(p => p.Photos).ToListAsync();
+            var users = await _context.Users.Include(u => u.Claims).ToListAsync();
+            users = await _context.Users.Include(p => p.Photos).ToListAsync();
+            return users;//await users;
         }
 
         public async Task<bool> SaveAllAsync()

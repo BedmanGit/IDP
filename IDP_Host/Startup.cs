@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using IDP.Entities;
 using IDP.Services;
+using IDP;
 
 namespace IDP_Host
 {
@@ -45,7 +46,8 @@ namespace IDP_Host
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
             })
-            .AddTestUsers(TestUsers.Users);
+            .AddUserStore();
+            //.AddTestUsers(TestUsers.Users);
 
             // in-memory, json config
             builder.AddInMemoryIdentityResources(Config.GetIdentityResources()); //Configuration.GetSection("IdentityResources")

@@ -7,6 +7,7 @@ using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.DTOs;
 using DatingApp.API.Helpers;
+using DatingApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,7 @@ namespace DatingApp.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
+        
             var user = await _repo.GetUserAsync(id);
             var userReturn = _mapper.Map<UserForDetailDTO>(user);
             return Ok(userReturn);
@@ -57,8 +59,26 @@ namespace DatingApp.API.Controllers
                 return Unauthorized();
             }
             var userFromRepo = await _repo.GetUserAsync(id);
-          
-            _mapper.Map(userForUpdate.ToClaims(), userFromRepo);
+            Type t = userForUpdate.GetType();
+            foreach (var p in t.GetProperties())
+            {
+                if(userFromRepo.Claims.Any(c => c.ClaimType == p.Name))
+                {
+                    userFromRepo.Claims.Where(c => c.ClaimType == p.Name).FirstOrDefault().ClaimValue = p.GetValue(userForUpdate).ToString();
+                }
+                else
+                {
+                    userFromRepo.Claims.Add(new UserClaim()
+                    {
+                        UserId = id,
+                        ClaimType = p.Name,
+                        ClaimValue = p.GetValue(userForUpdate).ToString()
+
+                    });
+
+                }
+            }
+
             if (await _repo.SaveAllAsync())
             return NoContent();
 
