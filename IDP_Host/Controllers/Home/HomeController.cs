@@ -28,6 +28,8 @@ namespace IDP.Controllers
 
         public IActionResult Index()
         {
+            return View();
+
             if (_environment.IsDevelopment())
             {
                 // only show in development
@@ -50,6 +52,7 @@ namespace IDP.Controllers
             if (message != null)
             {
                 vm.Error = message;
+                return View("Error", vm);
 
                 if (!_environment.IsDevelopment())
                 {

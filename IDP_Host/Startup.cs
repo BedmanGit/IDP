@@ -57,12 +57,13 @@ namespace IDP_Host
 
             if (Environment.IsDevelopment())
             {
-                // builder.AddDeveloperSigningCredential();
+                 //builder.AddDeveloperSigningCredential();
                 builder.AddSigningCredential(LoadCertificateFromStore());
             }
             else
             {
-                throw new Exception("need to configure key material");
+                //throw new Exception("need to configure key material");
+                builder.AddSigningCredential(LoadCertificateFromStore());
             }
 
             services.AddAuthentication()
@@ -94,7 +95,10 @@ namespace IDP_Host
 
         public X509Certificate2 LoadCertificateFromStore()
         {
-            string thumbPrint = "e01e26453337e30fc54b06e42bf12730dde7e544";
+            //string thumbPrint = "7835fd8ce81d30cad7497c1890d7add8e4f0a1d8".ToUpper();
+            string thumbPrint = "76aa7e2e199c7d1bda3d1639567752fb2cb8eb12".ToUpper();
+
+
             using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
             {
                 store.Open(OpenFlags.ReadOnly);
