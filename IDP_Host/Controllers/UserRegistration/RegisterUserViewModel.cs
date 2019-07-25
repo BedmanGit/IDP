@@ -26,6 +26,11 @@ namespace IDP.Controllers
         public string Lastname { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
+        //[DisplayFormat(DataFormatString = "MM/dd/yyyy")]
+        public DateTime Dob { get; set; }
+
+        [Required]
         [MaxLength(150)]
         public string Email { get; set; }
 

@@ -71,7 +71,7 @@ namespace DatingApp.API.Controllers
                     userFromRepo.Claims.Add(new UserClaim()
                     {
                         UserId = id,
-                        ClaimType = p.Name,
+                        ClaimType = p.Name.ToLower(),
                         ClaimValue = p.GetValue(userForUpdate).ToString()
 
                     });

@@ -63,10 +63,16 @@ namespace MyWeb
                     options.Scope.Add("openid");
                     options.Scope.Add("address");
                     options.Scope.Add("roles");
+                    options.Scope.Add("personal_infor");
                     options.Scope.Add("DatingApp-API");
+
                     
                     options.ClientSecret = "mysecret";
                     options.ClaimActions.MapJsonKey("role", "role");
+
+                    //"dob", "city", "country", "interests","lookingfor", "knownas", "introduction"
+
+
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         NameClaimType = "username"

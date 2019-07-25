@@ -2,18 +2,24 @@
   "iisSettings": {
     "windowsAuthentication": true,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://localhost/IDP_Host",
+      "sslPort": 0
+    },
     "iisExpress": {
-      "applicationUrl": "https://localhost:44316/",
-      "sslPort": 44316
+      "applicationUrl": "https://jamesidentityserver:44320/",
+      "sslPort": 44320
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
+      "launchUrl": "https://jamesidentityserver:44320",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "use64Bit": true
     },
     "SelfHost": {
       "commandName": "Project",

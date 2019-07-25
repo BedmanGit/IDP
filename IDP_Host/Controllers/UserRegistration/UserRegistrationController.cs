@@ -53,7 +53,7 @@ namespace IDP.Controllers
                 userToCreate.Claims.Add(new Entities.UserClaim("family_name", model.Lastname));
                 userToCreate.Claims.Add(new Entities.UserClaim("email", model.Email));
                 userToCreate.Claims.Add(new Entities.UserClaim("role", model.Role));
-
+                userToCreate.Claims.Add(new Entities.UserClaim("dob", model.Dob.ToShortDateString()));
                 // if we're provisioning a user via external login, we must add the provider &
                 // user id at the provider to this user's logins
                 if (model.IsProvisioningFromExternal)

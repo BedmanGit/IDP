@@ -13,13 +13,18 @@ namespace IDP_Host
     {
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
+            var customProfile = new IdentityResource(
+            name: "personal_infor",
+            displayName: "Custom profile",
+            claimTypes: new[] { "dob", "city", "country", "interests","lookingfor", "knownas", "introduction" });
+
             return new IdentityResource[]
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Address(),
-                new IdentityResource("roles", "You role(s)", new List<string>(){"role"})
-               
+                new IdentityResource("roles", "You role(s)", new List<string>(){"role"}),
+                customProfile
             };
         }
 
@@ -28,7 +33,7 @@ namespace IDP_Host
             return new ApiResource[]
             {
                 new ApiResource("DatingApp-API", "Dating App API",
-                new List<string>{"role" })
+                new List<string>{"role", "dob", "city", "country", "interests","lookingfor", "knownas", "introduction"})
             };
         }
 
@@ -66,6 +71,7 @@ namespace IDP_Host
                         StandardScopes.Profile,
                         StandardScopes.Address,
                         "roles",
+                        "personal_infor",
                         "DatingApp-API"
                     },
                     PostLogoutRedirectUris = {
@@ -91,7 +97,7 @@ namespace IDP_Host
                     PostLogoutRedirectUris = { "http://localhost:4200/signout-callback-oidc" },
                     AllowedCorsOrigins = { "http://localhost:4200/" },
 
-                    AllowedScopes = { "openid", "profile", "DatingApp-API" }
+                    AllowedScopes = { "openid", "profile", "personal_infor", "DatingApp-API" }
                 }
             };
         }

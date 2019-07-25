@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using IDP.Entities;
 using IDP.Services;
 using IDP;
+using System.Security.Cryptography.X509Certificates;
 
 namespace IDP_Host
 {
@@ -56,7 +57,8 @@ namespace IDP_Host
 
             if (Environment.IsDevelopment())
             {
-                builder.AddDeveloperSigningCredential();
+                // builder.AddDeveloperSigningCredential();
+                builder.AddSigningCredential(LoadCertificateFromStore());
             }
             else
             {
@@ -89,5 +91,23 @@ namespace IDP_Host
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
         }
+
+        public X509Certificate2 LoadCertificateFromStore()
+        {
+            string thumbPrint = "e01e26453337e30fc54b06e42bf12730dde7e544";
+            using (var store = new X509Store(StoreName.My, StoreLocation.LocalMachine))
+            {
+                store.Open(OpenFlags.ReadOnly);
+                var certCollection = store.Certificates.Find(X509FindType.FindByThumbprint, thumbPrint, true);
+                if(certCollection.Count == 0)
+                {
+                    throw new Exception("Certificate not found.");
+                }
+                return certCollection[0];
+
+                
+            }
+        }
+
     }
 }
